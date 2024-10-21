@@ -4,11 +4,13 @@ import courseReducer from "../features/courseSlice.jsx";
 import { persistReducer } from "redux-persist";
 import persistConfig from "../utils/persistConfig.js";
 import createCourseReducer from "../features/createCourseSlice.jsx";
+import lessonsReducer from "../features/lessonSlice.jsx";
 
 const rootReducer = combineReducers({
   user: userReducer,
   courses: courseReducer,
   createCourse: createCourseReducer,
+  lessons: lessonsReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -5,7 +5,6 @@ import {
   profile,
 } from "../controllers/userController.js";
 import upload from "../config/fileUpload.js";
-import isAdmin from "../middlewares/isAdmin.js";
 import { isLoggedIn } from "../middlewares/isLoggedIn.js";
 
 const router = Router();

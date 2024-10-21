@@ -10,6 +10,7 @@ export default function CourseDetailInstructor() {
   const dispatch = useDispatch();
   const { id } = useParams();
   const { singleCourse, loading } = useSelector((state) => state.courses);
+  const { allLessons } = useSelector((state) => state.lessons);
   useEffect(() => {
     dispatch(getSinlgeCourse(id));
   }, [dispatch, id]);
@@ -63,7 +64,23 @@ export default function CourseDetailInstructor() {
           </div>
           <hr className="border-none bg-zinc-700 h-[4px] mt-10" />
           <div className="mt-10">
-            <h1 className="text-xl">Add Lesson</h1>
+            {allLessons.length === 0 ? (
+              <button className="border border-zinc-800 px-3 py-2 rounded-md">
+                Add Lessons
+              </button>
+            ) : (
+              <>
+                <h1 className="text-xl font-semibold">Lessons</h1>
+                {allLessons.map((lesson, i) => {
+                  return (
+                    <div key={lesson.id} className="flex items-center gap-5">
+                      <span className="text-sm">{i + 1}. </span>
+                      <h2 className="text-xl font-semibold">{lesson.title}</h2>
+                    </div>
+                  );
+                })}
+              </>
+            )}
           </div>
         </main>
       )}

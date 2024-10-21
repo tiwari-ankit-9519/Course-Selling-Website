@@ -12,6 +12,11 @@ const lessonModel = mongoose.Schema(
     duration: {
       type: String,
     },
+    course: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Courses",
+      required: true,
+    },
   },
   {
     timestamps: true,
