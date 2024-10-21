@@ -53,11 +53,13 @@ const CourseDetail = () => {
             <button className="px-8 py-2 border rounded-md">Buy Now</button>
           </div>
           <div className="mt-10 flex">
-            <img
-              src={singleCourse?.courseImage}
-              alt="courseImage"
-              className="w-[50%]"
-            />
+            <div className="w-[50%]">
+              <img
+                src={singleCourse?.courseImage}
+                alt="courseImage"
+                className="w-[100%]"
+              />
+            </div>
             <div className="flex flex-col gap-4 justify-center w-[50%] px-36">
               <h1 className="text-5xl font-semibold">{singleCourse?.title}</h1>
               <p className="text-md">{singleCourse?.description}</p>

@@ -1,9 +1,14 @@
 /* eslint-disable react/prop-types */
 
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const CourseCard = ({ data }) => {
   const navigate = useNavigate();
+  const { user } = useSelector((state) => state.user);
+
+  console.log(user);
+
   const renderStars = (rating) => {
     const starPercentage = (rating / 5) * 100;
 
@@ -26,7 +31,14 @@ const CourseCard = ({ data }) => {
         return (
           <div
             onClick={() => {
-              navigate(`/course/${course._id}`);
+              if (user) {
+                navigate(
+                  user.role === "Instructor" &&
+                    `/instructor-course/${course._id}`
+                );
+              } else {
+                navigate(`/course/${course._id}`);
+              }
             }}
             key={course._id}
             className="flex flex-col flex-grow border text-sm shadow-2xl cursor-pointer transform duration-200 rounded-md font-poppins bg-white text-black w-[90%]"
