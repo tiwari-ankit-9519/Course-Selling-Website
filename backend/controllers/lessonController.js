@@ -7,21 +7,6 @@ export const createLesson = asyncHandler(async (req, res) => {
   const videoUrl = req.file?.path;
   const courseId = req.params.id;
 
-  const lessonExists = await Lesson.findOne({ title });
-  if (lessonExists) {
-    return res.status(409).json({
-      status: "error",
-      message: "Lesson already exists!",
-    });
-  }
-
-  const lesson = await Lesson.create({
-    title,
-    videoUrl,
-    duration,
-    course: courseId,
-  });
-
   const course = await Courses.findById(courseId);
   if (!course) {
     return res.status(404).json({
@@ -29,6 +14,21 @@ export const createLesson = asyncHandler(async (req, res) => {
       message: "Course not found!",
     });
   }
+
+  const lessonExists = course.lessons.some((l) => l.title === title);
+
+  if (lessonExists) {
+    return res.status(400).json({
+      status: "error",
+      message: "Lesson with the same title already exists in this course!",
+    });
+  }
+  const lesson = await Lesson.create({
+    title,
+    videoUrl,
+    duration,
+    course: courseId,
+  });
 
   course.lessons.push(lesson._id);
   await course.save();
@@ -40,8 +40,26 @@ export const createLesson = asyncHandler(async (req, res) => {
   });
 });
 
+export const getAllLessons = asyncHandler(async (req, res) => {
+  const courseId = req.params.id;
+  const course = await Courses.findById(courseId).populate("lessons");
+  if (!course) {
+    return res.status(404).json({
+      status: "error",
+      message: "Course not found!",
+    });
+  }
+
+  const lessons = course.lessons;
+  res.status(200).json({
+    status: "success",
+    data: lessons,
+  });
+});
+
 export const deleteLesson = asyncHandler(async (req, res) => {
-  const lesson = await Lesson.findByIdAndDelete(req.params.lessonId);
+  const lesson = await Lesson.findByIdAndDelete(req.params.id);
+
   if (!lesson) {
     return res.status(404).json({
       status: "error",
@@ -49,25 +67,22 @@ export const deleteLesson = asyncHandler(async (req, res) => {
     });
   }
 
+  const course = await Courses.findByIdAndUpdate(
+    lesson.course,
+    { $pull: { lessons: lesson._id } },
+    { new: true }
+  );
+
+  if (!course) {
+    return res.status(404).json({
+      status: "error",
+      message: "Course not found!",
+    });
+  }
+
   res.status(200).json({
     status: "success",
     message: "Lesson deleted successfully",
-  });
-});
-
-export const getAllLessons = asyncHandler(async (req, res) => {
-  const lessonId = req.params.id;
-  const lessons = await Lesson.findById(lessonId).populate("course");
-  res.json({
-    status: "success",
-    data: lessons,
-  });
-});
-
-export const getAllLessonsForSingleCourse = asyncHandler(async (req, res) => {
-  const lessons = await Lesson.find({ course: req.params.id });
-  res.json({
-    status: "success",
-    data: lessons,
+    _id: lesson._id,
   });
 });

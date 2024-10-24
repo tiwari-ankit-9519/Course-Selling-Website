@@ -60,8 +60,8 @@ const CreateCourse = () => {
     formData.append("category", data.category);
     formData.append("courseImage", data.image);
 
-    keypoints.forEach((point, index) => {
-      formData.append(`keypoints[${index}]`, point);
+    keypoints.forEach((point) => {
+      formData.append("keypoints[]", point);
     });
 
     dispatch(addCourse(formData))

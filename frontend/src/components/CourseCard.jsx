@@ -1,14 +1,9 @@
 /* eslint-disable react/prop-types */
 
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 const CourseCard = ({ data }) => {
   const navigate = useNavigate();
-  const { user } = useSelector((state) => state.user);
-
-  console.log(user);
-
   const renderStars = (rating) => {
     const starPercentage = (rating / 5) * 100;
 
@@ -31,14 +26,7 @@ const CourseCard = ({ data }) => {
         return (
           <div
             onClick={() => {
-              if (user) {
-                navigate(
-                  user.role === "Instructor" &&
-                    `/instructor-course/${course._id}`
-                );
-              } else {
-                navigate(`/course/${course._id}`);
-              }
+              navigate(`/course/${course._id}`);
             }}
             key={course._id}
             className="flex flex-col flex-grow border text-sm shadow-2xl cursor-pointer transform duration-200 rounded-md font-poppins bg-white text-black w-[90%]"
@@ -49,7 +37,9 @@ const CourseCard = ({ data }) => {
               alt={course.title}
             />
             <div className="p-5 flex flex-col gap-2 h-[50%]">
-              <h3 className="text-xl font-bold">{course.title}</h3>
+              <h3 className="text-xl font-bold">
+                {course.title.toUpperCase()}
+              </h3>
               <p className="text-sm text-gray-500">
                 {course.instructor.firstName + " " + course.instructor.lastName}
               </p>
@@ -62,7 +52,7 @@ const CourseCard = ({ data }) => {
               <p className="font-extrabold text-lg">${course.price}</p>
               <div className="text-sm text-gray-500">
                 {course.category.map((c) => (
-                  <p key={c._id}>{c.name}</p>
+                  <p key={c._id}>{c.name.toUpperCase()}</p>
                 ))}
               </div>
             </div>

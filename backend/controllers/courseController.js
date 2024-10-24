@@ -5,7 +5,6 @@ import { createCourseSchema } from "../utils/zodValidations.js";
 
 export const createCourse = asyncHandler(async (req, res) => {
   const { title, description, price, category, keypoints } = req.body;
-
   const courseImage = req.file?.path;
   const instructor = req.userAuthId;
 
@@ -51,6 +50,7 @@ export const createCourse = asyncHandler(async (req, res) => {
       instructor,
       category: categoryExists._id,
       courseImage,
+      keypoints,
     });
   } else {
     const newCategory = await Category.create({
@@ -63,6 +63,7 @@ export const createCourse = asyncHandler(async (req, res) => {
       instructor,
       category: newCategory._id,
       courseImage,
+      keypoints,
     });
   }
 

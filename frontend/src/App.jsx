@@ -6,7 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import CourseDetail from "./pages/CourseDetail";
 import InstructorHome from "./pages/InstructorHome";
 import CreateCourse from "./pages/CreateCourse";
-import CourseDetailInstructor from "./pages/CourseDetailInstructor";
+import CreateLesson from "./pages/CreateLesson";
 export default function App() {
   return (
     <BrowserRouter>
@@ -18,10 +18,7 @@ export default function App() {
         <Route path="/course/:id" element={<CourseDetail />} />
         <Route path="/instructor-home" element={<InstructorHome />} />
         <Route path="/create-course" element={<CreateCourse />} />
-        <Route
-          path="/instructor-course/:id"
-          element={<CourseDetailInstructor />}
-        />
+        <Route path="/create-lesson/:id" element={<CreateLesson />} />
       </Routes>
     </BrowserRouter>
   );

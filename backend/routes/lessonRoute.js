@@ -5,7 +5,6 @@ import {
   createLesson,
   deleteLesson,
   getAllLessons,
-  getAllLessonsForSingleCourse,
 } from "../controllers/lessonController.js";
 import upload from "../config/fileUpload.js";
 
@@ -18,8 +17,7 @@ router.post(
   upload.single("videoUrl"),
   createLesson
 );
-router.get("/:id", isLoggedIn, getAllLessons);
-router.get("/lesson/:id", isLoggedIn, getAllLessonsForSingleCourse);
+router.get("/:id", getAllLessons);
 router.delete("/:id", isLoggedIn, isInstructor, deleteLesson);
 
 export default router;
